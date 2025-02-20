@@ -13,6 +13,7 @@ import androidx.room.Room
 import com.example.examultimedia2eva.data.PeopleDB
 import com.example.examultimedia2eva.data.Person
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,7 +30,7 @@ class AñadirPViewModel(application: Application) : AndroidViewModel(application
     //Variables de la app
     val peopleList = mutableStateListOf<Person>()
 
-    var name by mutableStateOf("")
+    var name by mutableStateOf("Borja")
     var age by mutableStateOf("")
     var code by mutableStateOf("")
     var selectedPerson: Person? by mutableStateOf(null)
@@ -49,25 +50,27 @@ class AñadirPViewModel(application: Application) : AndroidViewModel(application
     }
 
     //Metodo para añadir las personas
+    private var count = 0
     fun addPerson() {
-        if (name.isNotEmpty() && age.isNotEmpty() && code.isNotEmpty()) {
-            viewModelScope.launch {
-                val newPerson = Person(id = 0, name = name, age = age.toInt(), code = code.toInt())
-                withContext(Dispatchers.IO) {
-                    personDao.insert(listOf(newPerson))
+        GlobalScope.launch {
+            (0..9).forEach { _ ->
+                val newReg = Person(
+                    name = "Sr/a ${name}_${count++}",
+                    age = (18..100).random(),
+                    code = (1000..10000).random()
+                )
+                // Código para insertar en la BD
+                personDao.insert(newReg) // Guarda en la BD
+
+                withContext(Dispatchers.Main) {
+                    peopleList.add(newReg) // Actualiza la UI
                 }
-                loadPeople()
-                clearFields()
             }
         }
     }
 
-    //Metodo que resetea las variables para volver a usarlas
-    private fun clearFields() {
-        name = ""
-        age = ""
-        code = ""
-    }
+
+
 
 }
 

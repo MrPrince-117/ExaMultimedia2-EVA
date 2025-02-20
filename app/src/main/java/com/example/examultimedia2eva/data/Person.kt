@@ -6,10 +6,9 @@ import androidx.room.PrimaryKey
 //Tabla de la base de datos
 @Entity(tableName = "person_table")
 data class Person(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     //Sentencia para asignar la clave primaria
-    val code: Int,
     val name: String,
     val age: Int,
-    val id: Int,
-    )
+    val code: Int
+)

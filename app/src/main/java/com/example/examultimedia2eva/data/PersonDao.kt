@@ -18,7 +18,7 @@ interface PersonDao {
     fun update(person: Person)
 
     @Insert
-    fun insert(people: List<Person>)
+    fun insert(people: Person)
 
     @Delete
     fun delete(person: Person)

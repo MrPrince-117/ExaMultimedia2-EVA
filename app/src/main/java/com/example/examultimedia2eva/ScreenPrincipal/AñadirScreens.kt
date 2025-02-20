@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,22 +41,22 @@ fun ListadosApp(
 
         LazyColumn {
             items(viewModel.peopleList){ person ->
-                Card (modifier = Modifier.fillMaxWidth().padding(8.dp)){
-                    Row {
+                Card (onClick = { navigateToFilaProcesadaScreen()},modifier = Modifier.fillMaxWidth().padding(8.dp)){
+                    Row (
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ){
 
-                        Text("Nombre: ${person.name}1")
-                        Text("Edad: ${person.age}")
-                        Text("code: ${person.id}")
-
-                        Button(onClick = {
-                            viewModel.name = person.name
-                            viewModel.age = person.age.toString()
-                            viewModel.code = person.code.toString()
-                            viewModel.selectedPerson = person
-                        }) {}
+                        Text("${viewModel.peopleList[person.id].name}")
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Text("${viewModel.peopleList[person.id].age}")
+                        Spacer(modifier = Modifier.padding(5.dp))
+                        Text("${viewModel.peopleList[person.id].code}")
 
                     }
                 }
+                Spacer(modifier = Modifier.padding(vertical = 10.dp))
 
             }
         }
