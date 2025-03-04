@@ -6,23 +6,31 @@ import androidx.navigation.compose.rememberNavController
 import com.example.examultimedia2eva.ScreenPrincipal.ListadosApp
 import com.example.examultimedia2eva.ScreenSegunda.FilasProcesadas
 import androidx.navigation.compose.composable
+import com.example.examultimedia2eva.data.Person
 
 
 @Composable
-fun NavegationControl(){
-    val navHostController  = rememberNavController()
+fun NavegationControl() {
+    val navHostController = rememberNavController()
 
-    NavHost(navHostController, startDestination = AñadirScreens){
-        composable<AñadirScreens>{
+    NavHost(navController = navHostController, startDestination = "listado") {
+        composable("listado") {
             ListadosApp(
-                navigateToFilaProcesadaScreen = {navHostController.navigate(FilaProcesadaScreen)}
+                navigateToFilaProcesadaScreen = { person ->
+                    navHostController.currentBackStackEntry?.savedStateHandle?.set("selectedPerson", person)
+                    navHostController.navigate("filaProcesada")
+                }
             )
         }
 
-        composable<FilaProcesadaScreen>{
+        composable("filaProcesada") {
+            val person = navHostController.previousBackStackEntry
+                ?.savedStateHandle
+                ?.get<Person>("selectedPerson")
+
             FilasProcesadas(
-                navigateToAñadirScreens = { navHostController.navigate(AñadirScreens) },
-                viewModel = TODO()
+                person = person,
+                navigateToAñadirScreens = { navHostController.popBackStack() }
             )
         }
     }

@@ -18,11 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import com.example.examultimedia2eva.ScreenPrincipal.AñadirPViewModel
+import com.example.examultimedia2eva.data.Person
 
 
 @Composable
 fun FilasProcesadas(
-    viewModel: AñadirPViewModel,
+    person: Person?,
     navigateToAñadirScreens: () -> Unit
 ) {
     Column(
@@ -30,20 +31,18 @@ fun FilasProcesadas(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val selectedPerson = viewModel.selectedPerson
-
         Text("Fila Procesada:", fontWeight = FontWeight.Bold)
 
-        selectedPerson?.let { person ->
+        person?.let {
             Card(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Nombre: ${person.name}")
-                    Text("Edad: ${person.age}")
-                    Text("Código: ${person.code}")
+                    Text("Nombre: ${it.name}")
+                    Text("Edad: ${it.age}")
+                    Text("Código: ${it.code}")
                 }
             }
         } ?: Text("No hay ninguna fila seleccionada.")
