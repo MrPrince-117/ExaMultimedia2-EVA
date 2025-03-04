@@ -21,7 +21,8 @@ fun NavegationControl(){
 
         composable<FilaProcesadaScreen>{
             FilasProcesadas(
-                navigateToAñadirScreens = {navHostController.navigate(AñadirScreens)}
+                navigateToAñadirScreens = { navHostController.navigate(AñadirScreens) },
+                viewModel = TODO()
             )
         }
     }

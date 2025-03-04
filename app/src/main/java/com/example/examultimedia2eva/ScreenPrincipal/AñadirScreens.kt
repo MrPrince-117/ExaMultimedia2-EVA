@@ -1,5 +1,6 @@
 package com.example.examultimedia2eva.ScreenPrincipal
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -21,46 +23,45 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.examultimedia2eva.Navegation.FilaProcesadaScreen
 import com.example.examultimedia2eva.Navegation.NavegationControl
+import com.example.examultimedia2eva.data.Person
 
 @Composable
 fun ListadosApp(
     viewModel: AñadirPViewModel = viewModel(),
-    navigateToFilaProcesadaScreen: () -> Unit
-){
-    Column (
+    navigateToFilaProcesadaScreen: (Person) -> Unit
+) {
+    Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        Row (horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically){
-            Button(onClick = {viewModel.addPerson()}) {
-                Text("Añadir Filas")
-            }
+    ) {
+        Button(onClick = { viewModel.addPerson() }) {
+            Text("Añadir Filas")
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         LazyColumn {
-            items(viewModel.peopleList){ person ->
-                Card (onClick = { navigateToFilaProcesadaScreen()},modifier = Modifier.fillMaxWidth().padding(8.dp)){
-                    Row (
+            items(viewModel.peopleList) { person ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                        .clickable { navigateToFilaProcesadaScreen(person) } // Se eliminó la dependencia del ViewModel
+                ) {
+                    Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ){
-
-                        Text("${viewModel.peopleList[person.id].name}")
-                        Spacer(modifier = Modifier.padding(5.dp))
-                        Text("${viewModel.peopleList[person.id].age}")
-                        Spacer(modifier = Modifier.padding(5.dp))
-                        Text("${viewModel.peopleList[person.id].code}")
-
+                        modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    ) {
+                        Text(text = person.name)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = person.age.toString())
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = person.code.toString())
                     }
                 }
-                Spacer(modifier = Modifier.padding(vertical = 10.dp))
-
             }
         }
-
     }
 }
 
